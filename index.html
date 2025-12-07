@@ -1,285 +1,572 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCMufTz6WXyvtjNskfpBD8QUce1HbRxwmE6Q&s">
-  <title>Best Quest</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLIFa5PwensyeTkascd3geKUpokBDnre8ebQ&s">
+  <title>Darkdoor — Хоррор квесты</title>
+  <meta name="description" content="Darkdoor — страховито качественные хоррор квесты. Бронируй опыт, проверяй команду, переживи ночь страха."/>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: #eee;
-      overflow-x: hidden;
+    /* Дополнительные стили для эффектов */
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: .6; }
+      100% { opacity: 1; }
     }
-
-    /* АНИМИРОВАННЫЙ ФОН */
-    .background-anim {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGLHWYXrsYa8EfcwwnhTSW0Ev-JexaFiTqNA&s') center/cover no-repeat;
-      filter: brightness(0.35);
-      z-index: -2;
-      animation: zoom 30s infinite alternate ease-in-out;
-    }
-
-    .glitch {
-  position: relative;
-  color: #fff;
-  font-size: 32px;
-  font-weight: bold;
-  animation: glitch 1s infinite;
-}
-
-/* Цветные сдвиги */
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.glitch::before {
-  left: 3px;
-  text-shadow: -2px 0 red;
-  animation: glitch-before 1s infinite;
-}
-
-.glitch::after {
-  left: -3px;
-  text-shadow: -2px 0 blue;
-  animation: glitch-after 1s infinite;
-}
-
-/* Основная вибрация */
-@keyframes glitch {
-  0% { transform: none; }
-  20% { transform: skew(0.1deg); }
-  40% { transform: skew(-0.9deg); }
-  60% { transform: translateX(3px); }
-  80% { transform: translateX(-3px); }
-  100% { transform: none; }
-}
-
-/* Сдвиги */
-@keyframes glitch-before {
-  0% { clip-path: inset(0 0 80% 0); }
-  50% { clip-path: inset(30% 0 50% 0); }
-  100% { clip-path: inset(0 0 100% 0); }
-}
-
-@keyframes glitch-after {
-  0% { clip-path: inset(50% 0 10% 0); }
-  50% { clip-path: inset(10% 0 30% 0); }
-  100% { clip-path: inset(50% 0 10% 0); }
-}
-    @keyframes zoom {
-      from { transform: scale(1); }
-      to { transform: scale(1.30); }
-    }
-
-    /* ТУМАН */
-    .fog {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 300%;
-      height: 300%;
-      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjP00pk5Y4d1iK6pSzQnNrh6GeXmIs3Xh94Q&s');
-      opacity: 0.05;
-      animation: fogmove 60s infinite linear;
-      z-index: -1;
-    }
-    @keyframes fogmove {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    header {
-      padding: 20px;
-      text-align: center;
-      backdrop-filter: blur(6px);
-      background: rgba(0,0,0,0.45);
-    }
-    header h1 {
-      margin: 0;
-      font-size: 34px;
-      letter-spacing: 3px;
-      animation: fadeIn 2s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-
-    .hero {
-      height: 70vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-    .hero h2 {
-      font-size: 46px;
-      background: rgba(0,0,0,0.55);
-      padding: 25px 45px;
-      border-radius: 12px;
-      animation: fadeIn 2.5s ease;
-    }
-
-    .administ {
-      height: 10vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-    .administ h3 {
-      font-size: 25px;
-      background: rgba(0,0,0,0.55);
-      padding: 10px 15px;
-      border-radius: 12px;
-      animation: fadeIn 2.5s ease;
-    }
-
-    .section {
-      padding: 50px 20px;
-      max-width: 1100px;
-      margin: auto;
-      text-align: center;
-    }
-
-    .rooms {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-      margin-top: 40px;
-    }
-
-    .card {
-      background: rgba(20,20,20,0.8);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      transition: transform 0.3s, box-shadow 0.3s;
-      animation: fadeIn 1s ease;
-    }
-    .card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 0 20px rgba(255,255,255,0.25);
-    }
-    .card img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 30px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      background: rgba(0,0,0,0.6);
-      margin-top: 60px;
-      backdrop-filter: blur(5px);
-    }
-
-    .buy {
-      padding: 50px 20px;
-      max-width: 1100px;
-      margin: auto;
-      text-align: center;
-    }
+    .flicker { animation: flicker 3s infinite; }
+    .glow { text-shadow: 0 0 8px rgba(255,0,0,.15), 0 0 24px rgba(255,0,0,.06); }
+    .bg-noise { background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 4px 4px; }
   </style>
 </head>
-<body>
-  <div class="background-anim"></div>
-  <div class="fog"></div>
-
-  <header>
-    <h1 class="glitch">Best Quest</h1>
-  </header>
-
-  <section class="hero">
-    <h2>Тайны. Адреналин. Побег. Готов ли ты?</h2>
-  </section>
-
-  <section class="section">
-    <h2>Наши Квесты</h2>
-    <div class="rooms">
-
-      <div class="card">
-        <img src="https://cdn1.epicgames.com/offer/78f42129096d4233bccc527733debfbd/EGS_Outlast_RedBarrels_S1_2560x1440-00bcfe36f1adad2b9168add0a137fbc2?resize=1&w=480&h=270&quality=medium" />
-        <h3>Заброшенная лаборатория</h3>
-        <h3>Стоимость 3000р</h3>
-        <h3 style="color: red">Уровень страха: Максимальный</h3>
-        <h3 style="color:green">Игроков: 1-15</h3>
-        <h3>Вы оказываетесь внутри заброшенной психиатрической клиники Маунт-Мэссив. Темнота, шепоты в коридорах и неизвестные существа преследуют вас. Единственное оружие — камера с ночным видением. Выжить сможет только тот, кто не поддастся панике…</h3>
-      </div>
-
-      <div class="card">
-        <img src="https://gorod.dp.ua/afisha/images/special/1212/23008.jpg" />
-        <h3>Техасская резня бензопилой</h3>
-        <h3>Стоимость 3500р</h3>
-        <h3 style="color: red">Уровень страха: Максимальный</h3>
-        <h3 style="color:green">Игроков: 1-12</h3>
-        <h3>Вы попадаете в дом семьи людоедов на окраине Техаса. В темноте раздаётся рев бензопилы, и каждый шаг может стать последним. Ваша задача — выбраться до того, как Пилоносец найдёт вас. Хватит ли у вас смекалки найти выход? Кто знает, сколько у него было жертв. Будь первым, кто сможет выжить.</h3>
-      </div>
-
-      <div class="card">
-        <img src="https://upload.wikimedia.org/wikipedia/ru/f/ff/%D0%9E%D0%BD%D0%BE_%28%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80_%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0%2C_2017%29.jpg" />
-        <h3>ОНО</h3>
-        <h3>Стоимость 3500р</h3>
-        <h3 style="color:red">Уровень страха: Средний</h3>
-        <h3 style="color:green">Игроков 1-8</h3>
-        <h3>Место, где страх принимает любую форму. Узкие коридоры, детские голоса в пустоте и улыбка, которая появляется там, где её быть не должно. Чтобы выбраться, нужно смотреть в глаза своему самому глубинному ужасу — и надеяться, что клоун не смотрит в ответ.</h3>
-      </div>
-
-      <div class="card">
-        <img src="https://spb.mir-kvestov.ru/uploads/quest_photos/6850/kvest-zabroshennoe-metro-vtupike-6290e9af_large.jpg" />
-        <h3>Заброшенное метро</h3>
-        <h3>Стоимость: 3500р</h3>
-        <h3 style="color:red">Уровень страха: Нормальный</h3>
-        <h3 style="color:green">Игроков 2-6</h3>
-        <h3>Вы спускаетесь в мрачные туннели заброшенного метро, где темнота скрывает неизвестные опасности. Стук капающей воды, эхо пустых вагонов и таинственные силуэты вокруг — каждая минута здесь может стать последней. Сможете ли вы выбраться на свет?</h3>
-      </div>
-
-      <div class="card">
-        <img src="https://spb.mir-kvestov.ru/uploads/quest_photos/8926/kvest-ograblenie-kazino-cheater-lab-7702c575.jpg" />
-        <h3>Ограбление казино</h3>
-        <h3>Стоимость 4000р</h3>
-        <h3 style="color:red">Уровень страха: Не страшный</h3>
-        <h3 style="color:green">Игроков 2-8</h3>
-        <h3>Вы вместе с командой готовите дерзкое ограбление роскошного казино. Время идёт, охрана не дремлет, а каждая ошибка может стоить свободы. Сумеете ли вы украсть главный приз и выбраться живыми? Испытай свою ловкость и удачу.</h3>
-      </div>
-
-      <div class="card">
-        <img src="https://extrareality.ru/img/quest/2/6/8/4/0/26840.jpg" />
-        <h3>Судная ночь</h3>
-        <h3>Стоимость 5000р</h3>
-        <h3 style="color: red">Уровень страха: Максимальный</h3>
-        <h3 style="color: green">Игроков 1-10</h3>
-        <h3>Наступила Судная ночь, и город погрузился в хаос. Законы больше не действуют, улицы полны опасности, а вы должны выжить среди хаоса и ловушек, прежде чем наступит рассвет</h3>
+<body class="bg-black text-gray-200 antialiased leading-relaxed">
+  <!-- NAV -->
+  <header class="w-full fixed top-0 z-50 bg-black/60 backdrop-blur-md border-b border-red-900/20">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <a href="#hero" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-red-800 flex items-center justify-center shadow-2xl">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 L15 8 L22 9 L17 14 L18 21 L12 18 L6 21 L7 14 L2 9 L9 8 Z" fill="#1f2937"/></svg>
+        </div>
+        <span class="font-semibold tracking-wide">Darkdoor</span>
+      </a>
+      <nav class="hidden md:flex gap-6 items-center text-sm">
+        <a href="#quests" class="hover:text-red-400 transition">Квесты</a>
+        <a href="#about" class="hover:text-red-400 transition">О нас</a>
+        <a href="#faq" class="hover:text-red-400 transition">FAQ</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+      </nav>
+      <div class="md:hidden">
+        <button id="burger" aria-label="menu" class="p-2 border rounded border-red-900/30">☰</button>
       </div>
     </div>
-    <section class="administ">
-      <h3>Для заказа квеста обратитесь к нашему администратору в Telegram: @kkssyx </h3>
-    </section>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-red-900/10 bg-black/80">
+      <div class="flex flex-col p-4 gap-3">
+        <a href="#quests">Квесты</a>
+        <a href="#about">О нас</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero" class="min-h-screen flex items-center" style="padding-top:84px;">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-6">
+      <div>
+        <h1 class="text-5xl sm:text-6xl font-extrabold leading-tight mb-4 glow">Darkdoor — переживи страх</h1>
+        <p class="text-gray-300 mb-6">Реалистичные хоррор-квесты Москвы для смелых. Актёры, спецэффекты, динамический сюжет. Команда 2–6 человек, время 60–90 минут.</p>
+        <div class="flex gap-4">
+          <a href="#quests" class="px-5 py-3 bg-red-700 rounded font-medium text-black hover:bg-red-600 transition">Выбрать квест</a>
+        </div>
+        <ul class="mt-6 text-sm text-gray-400 space-y-2">
+          <li>✅ Подготовка индивидуально</li>
+          <li>⚠️ Возраст 16+</li>
+          <li>🕒 Сеансы ежедневно, гибкий график</li>
+        </ul>
+      </div>
+      <div class="relative">
+        <div class="w-full h-80 md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1504893524553-b8553e47a0b9?auto=format&fit=crop&w=1200&q=60'); filter: contrast(.8) saturate(.6);">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+          <div class="absolute bottom-4 left-4 text-sm bg-black/50 px-3 py-1 rounded">Физические сценки • Живая актёрская игра</div>
+        </div>
+        <div class="absolute -mt-10 right-6 text-xs text-gray-400">Рекомендуем бронировать за 2–7 дней</div>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    © 2025 Best Quest. Все права защищены.
+  <!-- QUESTS -->
+  <section id="quests" class="py-20 bg-black/60 border-t border-red-900/10">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6 text-center">Наши квесты</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/26054/kvest-outlast-quest-stars-3e78602f_medium.jpg" alt="Квест: Outlast" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Outlast</h3>
+            <p class="text-sm text-gray-400 my-2">Вы оказываетесь в стенах заброшенного психиатрического комплекса, куда много лет никто не решался войти. Плесень, ржавчина и тишина — единственные свидетели того, что здесь когда-то творилось. Но стоило вам включить камеру, как вы понимаете: в этом месте вы не одни.
+Тени движутся быстрее, чем ваш взгляд успевает их поймать. Двери закрываются сами. А по коридорам, где еще недавно стояла мертвая тишина, начинают слышаться шаги… и дыхание.
+Вам не нужно побеждать — вам нужно выжить, и каждый поворот может стать последним. Мир Outlast жесток, мрачен и абсолютно беспощаден.</p>
+            <h3 style="font-weight: bold">Стоимость: 3500р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.8</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 128</h3>
+            <h5>Адрес: пр-т Волгоградский, д. 32, к. 8</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 6 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/13635/kvest-pryatki-v-alkatrase-quest-stars-6f77eef4_medium.jpg" alt="Квест: Прятки в Алькатрасе" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Прятки в Алькатрасе</h3>
+            <p class="text-sm text-gray-400 my-2">Тюрьма, которую называют “островом без надежды”, оживает перед вами. Каменные стены хранят истории отчаяния, побегов и тихих ночных криков тех, кто так и не увидел свободу.
+Вы — группа заключённых, получившая шанс на побег. Но в темноте коридоров вас поджидает тот, кого не было в тюремных списках. Он знает этот комплекс лучше вас. Знает каждую камеру. Знает, куда вы побежите.
+Это не просто игра в прятки — это охота. И охотник уже начал считать.</p>
+            <h3 style="font-weight: bold">Стоимость: 3500р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Средний</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.7</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 79</h3>
+            <h5>Адрес: пр-т Волгоградский, д. 32, к. 8</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/31193/kvest-silent-hill-quest-stars-a3838956_medium.jpg" alt="Квест: Лаборатория конца" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Silent Hill</h3>
+            <p class="text-sm text-gray-400 my-2">Город, покрытый плотным туманом, будто живёт собственной, больной жизнью. Здесь реальность разрывается, превращаясь в ржавые стены, кровавые следы и монстров, созданных из ваших же страхов.
+Каждый шорох вызывает дрожь, каждая улица меняется на ваших глазах. Вам придется пройти через мир, где преступления прошлого оживают, а грехи становятся материальными.
+Silent Hill не просто пугает — он отражает вас. И далеко не каждому нравится то, что он увидит..</p>
+            <h3 style="font-weight: bold">Стоимость: 4000р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.9</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 153</h3>
+            <h5>Адрес: ул. Складочная, д. 1, стр. 13</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 4 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/38685/kvest-r-e-biohazard-wild-fear-45101899_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Resident Evil: Biohazard</h3>
+            <p class="text-sm text-gray-400 my-2">Вы оказываетесь в закрытой исследовательской зоне, где корпорация проводила эксперименты, о которых не знают даже их создатели. Заражение распространилось слишком быстро, сотрудники исчезли, а лаборатории превратились в смертельный лабиринт.
+Вы должны пройти через зоны, где обитают мутационные формы, разорванные механизмы и смертельно опасные существа, потерявшие человеческий облик.
+Каждая минута — шанс стать очередным образцом для коллекции. Выбор один: остановить очаг инфекции… или стать частью эксперимента.</p>
+            <h3 style="font-weight: bold">Стоимость: 4000р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.6</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 183</h3>
+            <h5>Адрес: ш. Андроновское, д. 26, стр. 17</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/31078/kvest-ono-quest-stars-e193799b_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">ОНО</h3>
+            <p class="text-sm text-gray-400 my-2">Добро пожаловать в Дерри — город, где улыбки детей — лишь приманка для древнего зла. Канализация шепчет, трубы плачут, а красный шарик тихо качается на холодном ветру.
+ОНО видит ваши страхи и принимает форму того, чего вы боитесь больше всего. Здесь невозможно спрятаться — Оно всегда на шаг впереди.
+Чтобы выжить, вам придется смотреть прямо в глаза тому, что питается человеческим ужасом… и наслаждается им.</p>
+            <h3 style="font-weight: bold">Стоимость: 4000р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.8</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 68</h3>
+            <h5>Адрес: ул. Советская, д. 80, стр. 9</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/12749/kvest-nazad-v-sssr-perezagruzka-barabaka-85504571_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Назад в СССР: перезагрузка</h3>
+            <p class="text-sm text-gray-400 my-2">1986 год. Страна живёт по расписанию, но в этом дворе, в этой школе и в этом подвале что-то пошло не так.
+Радиоприёмник ловит передачи, которых не существует. Газетные вырезки меняют текст. Люди исчезают бесследно. Вам нужно пройти через реальность, где время застыло — но не всё в этом месте принадлежит прошлому.
+Вы окажетесь в СССР, которого не было в учебниках. И выход зависит только от того, сможете ли вы разгадать тайну, которую никто не должен был знать.</p>
+            <h3 style="font-weight: bold">Стоимость: 4000р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Не страшный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.9</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 223</h3>
+            <h5>Адрес: пер. Партийный, д. 1, к. 10</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/28000/kvest-babadook-quest-stars-ab40b98f_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Babadook</h3>
+            <p class="text-sm text-gray-400 my-2">Слышишь треск? Это он. Тени в углах становятся плотнее, шаги за спиной — громче, а книга на полу — открыта на той странице, которую вы точно не читали.
+Бабадук не гоняется. Он наблюдает, дышит вам в затылок и ждёт, когда страх переполнит вашу душу. Его нельзя изгнать силой. С ним можно только столкнуться лицом к лицу — и надеяться, что он выберет не вас.</p>
+            <h3 style="font-weight: bold">Стоимость: 4500р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.9</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 53</h3>
+            <h5>Адрес: ул. Советская, д. 80, стр. 9</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/37352/kvest-hell-fest-quest-stars-a8f73caf_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Hell Fest</h3>
+            <p class="text-sm text-gray-400 my-2">Вы пришли на фестиваль ужасов ради эмоций… но быстро понимаете, что некоторые аттракционы слишком реалистичны. Крики кажутся настоящими. Персонажи — слишком живыми.
+Среди десятков декораций прячется тот, кто играет без сценария. Он выбирает цель… и следует до конца.
+Праздник становится ловушкой, а каждая зона фестиваля — этапом смертельного квеста.</p>
+            <h3 style="font-weight: bold">Стоимость: 4500р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.4</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 251</h3>
+            <h5>Адрес: ш. Измайловское, д. 73 Ж, стр. 5</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+          <img src="https://mir-kvestov.ru/uploads/quest_photos/38260/kvest-horror-kinoteatr-koshmar-v-zale-quest-stars-fdb5f641_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+          <div class="p-4">
+            <h3 class="font-semibold text-lg">Хоррор-кинотеатр "Кошмар в зале"</h3>
+            <p class="text-sm text-gray-400 my-2">Этот кинотеатр давно закрыт, но по ночам в нём всё ещё показывают фильмы, которые не должны существовать. Вы занимаете места на последнем сеансе, и в этот момент экран начинает искажаться.
+Актёры на плёнке исчезают. Силуэты появляются на проходах. Звук идёт изнутри зала, а не из колонок.
+Вы больше не зрители — вы часть сюжета. И этот фильм не имеет счастливого конца.</p>
+            <h3 style="font-weight: bold">Стоимость: 4500р</h3>
+            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.7</h3>
+            <h3 style="color: green; font-weight: bold">Количество команд за все время: 25</h3>
+            <h5>Адрес: ул. Советская, д. 80, стр. 9</h5>
+            <div class="flex items-center justify-between mt-4">
+              <div class="text-sm">От 2 до 5 чел</div>
+              <div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+
+                <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+                  <img src="https://mir-kvestov.ru/uploads/quest_photos/23646/kvest-priyut-quest-stars-ed2afb7d_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+                  <div class="p-4">
+                    <h3 class="font-semibold text-lg">Приют</h3>
+                    <p class="text-sm text-gray-400 my-2">Заброшенный детский приют встречает вас шепотом ветра и детскими голосами, которые будто звучат из суворов пустых комнат.
+Игровая комната выглядит так, будто дети вышли отсюда всего минуту назад. Но их тени остались.
+Трагедия, скрытая за стенами приюта, оживает прямо перед вами. И покинуть его можно только разобравшись в том, почему маленькие жители до сих пор здесь.</p>
+                    <h3 style="font-weight: bold">Стоимость: 4500р</h3>
+                    <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+                    <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.8</h3>
+                    <h3 style="color: green; font-weight: bold">Количество команд за все время: 137</h3>
+                    <h5>Адрес: пр-т Волгоградский, д. 32, к. 8</h5>
+                    <div class="flex items-center justify-between mt-4">
+                      <div class="text-sm">От 2 до 5 чел</div>
+                      <div>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+                  <img src="https://mir-kvestov.ru/uploads/quest_photos/35456/kvest-poltergeyst-quest-stars-5e4592b0_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+                  <div class="p-4">
+                    <h3 class="font-semibold text-lg">Полтергейст</h3>
+                    <p class="text-sm text-gray-400 my-2">Вы входите в дом, где каждый предмет живёт собственной жизнью. Стулья двигаются сами. Холод проходит по позвоночнику. Треск слышится из каждого угла.
+Это не просто дух — это сила, которая умеет злиться. Ритуал изгнания сложен, а время ограничено.
+Каждое ваше действие может привести к вспышке ярости, которая сметёт всё на своём пути.</p>
+                    <h3 style="font-weight: bold">Стоимость: 4500р</h3>
+                    <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+                    <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.9</h3>
+                    <h3 style="color: green; font-weight: bold">Количество команд за все время: 287</h3>
+                    <h5>Адрес: ш. Дмитровское, д. 157, стр.12</h5>
+                    <div class="flex items-center justify-between mt-4">
+                      <div class="text-sm">От 2 до 5 чел</div>
+                      <div>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+                  <img src="https://mir-kvestov.ru/uploads/quest_photos/25521/kvest-ohotniki-za-iskusstvom-questreality-ae6fe07c_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+                  <div class="p-4">
+                    <h3 class="font-semibold text-lg">Охотники за искусством</h3>
+                    <p class="text-sm text-gray-400 my-2">Вы — команда экспертов, отправленная в секретную галерею, где собраны самые редкие и опасные произведения искусства.
+Картины здесь не просто нарисованы — они живут. Изображения меняют форму, тени выходят за рамки, а некоторые полотна могут забрать вас внутрь, если подойти слишком близко.
+Ваша задача — достать артефакт, который ушёл в мир искусства… и вернуть его. Пока он не вернул вас.</p>
+                    <h3 style="font-weight: bold">Стоимость: 4500р</h3>
+                    <h3 style="color:red; font-weight: bold;">Уровень страха: Не страшный</h3>
+                    <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.9</h3>
+                    <h3 style="color: green; font-weight: bold">Количество команд за все время: 78</h3>
+                    <h5>Адрес: ул. Автозаводская, д. 4</h5>
+                    <div class="flex items-center justify-between mt-4">
+                      <div class="text-sm">От 2 до 5 чел</div>
+                      <div>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+
+                        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+                          <img src="https://mir-kvestov.ru/uploads/quest_photos/34638/kvest-amitivill-grim-team-7c32d692_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+                          <div class="p-4">
+                            <h3 class="font-semibold text-lg">Амитивилль</h3>
+                            <p class="text-sm text-gray-400 my-2">Дом, пропитанный злом, встречает вас тяжелым воздухом и ощущением, что за вами наблюдают с каждого угла.
+Каждая комната хранит свою историю — от тёмных ритуалов до трагических событий, оставивших следы на стенах.
+Чтобы выбраться, нужно понять, что произошло в этом месте — и почему дом выбирает себе новых хозяев.</p>
+                            <h3 style="font-weight: bold">Стоимость: 5000р</h3>
+                            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+                            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.9</h3>
+                            <h3 style="color: green; font-weight: bold">Количество команд за все время: 254</h3>
+                            <h5>Адрес: пр-т Мира, д. 119, стр. 544</h5>
+                            <div class="flex items-center justify-between mt-4">
+                              <div class="text-sm">От 2 до 5 чел</div>
+                              <div>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+
+                        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+                          <img src="https://mir-kvestov.ru/uploads/quest_photos/29656/kvest-zaklyatie-quest-stars-b9a2b30e_medium.jpg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+                          <div class="p-4">
+                            <h3 class="font-semibold text-lg">Заклятие</h3>
+                            <p class="text-sm text-gray-400 my-2">Семья покинула этот дом, оставив после себя дневники, фотографии и следы отчаянных попыток спастись.
+Теперь вы здесь — чтобы завершить ритуал, который они не успели выполнить. С каждым шагом дух становится сильнее, а тёмная энергия проявляется всё отчётливее.
+Ошибаться нельзя: иначе вы станете следующими обитателями этого дома.</p>
+                            <h3 style="font-weight: bold">Стоимость: 5000р</h3>
+                            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+                            <h3 style="color:yellow; font-weight: bold">Рейтинг: 4.3</h3>
+                            <h3 style="color: green; font-weight: bold">Количество команд за все время: 15</h3>
+                            <h5>Адрес: ул. Складочная, д. 1, стр. 13</h5>
+                            <div class="flex items-center justify-between mt-4">
+                              <div class="text-sm">От 2 до 5 чел</div>
+                              <div>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+
+                        <article class="rounded-xl overflow-hidden bg-neutral-900/40 border border-red-900/20 shadow-lg">
+                          <img src="https://mir-kvestov.ru/uploads/quest_photos/33843/kvest-ochen-strannye-dela-quest-stars-9f30632f_medium.jpeg" alt="Квест: Дом на холме" class="w-full h-44 object-cover">
+                          <div class="p-4">
+                            <h3 class="font-semibold text-lg">Очень странные дела</h3>
+                            <p class="text-sm text-gray-400 my-2">Эксперименты, которые проводились в закрытом научном комплексе, открыли портал в тёмный мир. Изнанка становится всё ближе, её существам хватает лишь одного рывка, чтобы прорваться в реальность.
+Вы должны восстановить стабильность портала, спасти пропавших и остановить катастрофу.
+Но существо, обитающее за границей миров, уже почувствовало ваше присутствие… и оно голодно.</p>
+                            <h3 style="font-weight: bold">Стоимость: 5000р</h3>
+                            <h3 style="color:red; font-weight: bold;">Уровень страха: Максимальный</h3>
+                            <h3 style="color:yellow; font-weight: bold">Рейтинг: 5.0</h3>
+                            <h3 style="color: green; font-weight: bold">Количество команд за все время: 351</h3>
+                            <h5>Адрес: ул. Советская, д. 80, стр. 9</h5>
+                            <div class="flex items-center justify-between mt-4">
+                              <div class="text-sm">От 2 до 5 чел</div>
+                              <div>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSczOuRh0J7R0fiY0oFYKE0OBXAsXZXUqGPwHH106JTLyfeIUw/viewform?usp=publish-editor"><button id="bookBtn2" class="bg-red-700 px-3 py-2 rounded text-black font-medium">Забронировать</button></a>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+      </div>
+
+      <div class="mt-8 text-center">
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-16">
+    <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 class="text-2xl font-bold mb-3">О нас</h3>
+        <p class="text-gray-300 mb-4">Darkdoor — команда, которая превращает страх в незабываемое приключение.
+Мы создаём хоррор-квесты, где каждая сцена тщательно продумана: спецэффекты, живые актёры, динамический сюжет. Наши квесты погружают вас в атмосферу настоящего ужаса, сохраняя при этом безопасность и комфорт.
+
+Каждый квест разрабатывается режиссёрами и сценаристами с опытом работы в театре и кино. Мы используем профессиональное оборудование, звуковые эффекты и световые решения, чтобы сделать игру максимально реалистичной.</p>
+        <ul class="text-sm text-gray-400 space-y-2">
+          <li>🎭 Профессиональные актёры</li>
+          <li>🔊 Реальные звуковые системы и световые эффекты</li>
+          <li>🛡️ Стандарты безопасности и инструктаж</li>
+        </ul>
+      </div>
+      <div class="bg-neutral-900/40 p-6 rounded-xl border border-red-900/10">
+        <h4 class="font-semibold mb-2">Как проходит сеанс</h4>
+        <ol class="text-sm text-gray-400 space-y-2 list-decimal ml-5">
+          <li>Брифинг и правила (10 минут)</li>
+          <li>Игра (60–90 минут)</li>
+          <li>Дебриф и фото (10 минут)</li>
+        </ol>
+        <div class="mt-4 text-xs text-gray-400">* Есть лёгкие и интенсивные варианты. Перед игрой обязательно озвучьте ограничения здоровья.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="py-16 border-t border-red-900/10 bg-black/60">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- thumbnails -->
+      </div>
+      <div class="mt-6 text-center">
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-16">
+    <div class="max-w-4xl mx-auto px-6">
+      <h3 class="text-2xl font-bold mb-6 text-center">Вопросы и ответы</h3>
+      <div class="space-y-3">
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">Почему нужна предоплата 50% или 100%?</summary>
+          <p class="mt-2 text-sm text-gray-400">Предоплата необходима для гарантии вашей брони. Каждый квест тщательно подготавливается: мы настраиваем сцены, готовим реквизит, проверяем спецэффекты и резервируем актёров именно под вашу команду. Без предоплаты мы не можем обеспечить полную готовность к игре, поэтому частичная или полная оплата позволяет нам предоставить вам максимально качественный и безопасный опыт.</p>
+        </details>
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">Можно ли забронировать квест на следующий день?</summary>
+          <p class="mt-2 text-sm text-gray-400">Технически — да, но мы рекомендуем бронирование как минимум за 1–2 дня. Это нужно, чтобы успеть подготовить каждую сцену, проверить оборудование, продумать актёрскую игру и обеспечить безопасность. Чем раньше вы бронируете, тем лучше мы сможем подстроиться под ваши пожелания и сделать игру максимально атмосферной и захватывающей.</p>
+        </details>
+
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">Можно ли вернуть деньги за отмену брони?</summary>
+          <p class="mt-2 text-sm text-gray-400">Возврат средств возможен только при отмене не позднее, чем за 24 часа до начала игры. Если отмена происходит позже, мы не можем компенсировать расходы на подготовку квеста, аренду реквизита и участие актёров. Это правило помогает нам гарантировать качество опыта для всех команд и избегать пустых сеансов.</p>
+        </details>
+
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">С какого возраста можно участвовать?</summary>
+          <p class="mt-2 text-sm text-gray-400">Минимальный рекомендуемый возраст для участия в наших квестах — 16 лет. Для участников 14–15 лет требуется письменное разрешение от родителей или законных представителей. Это связано с тем, что наши квесты могут включать пугающие сцены, спецэффекты, внезапные звуки и напряжённые моменты, которые могут быть некомфортны для маленьких игроков.</p>
+        </details>
+
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">Можно ли шуметь, кричать, пугать актеров?</summary>
+          <p class="mt-2 text-sm text-gray-400">Да, это часть атмосферы и веселья! Но важно соблюдать правила игры: не наносить вред актёрам, не ломать реквизит и не выходить за пределы игровых зон. Актёры обучены реагировать на участников, но мы просим всех игроков быть внимательными и уважать чужой труд, чтобы игра была безопасной и комфортной для всех.</p>
+        </details>
+
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">Сколько человек можно взять в команду?</summary>
+          <p class="mt-2 text-sm text-gray-400">Количество участников зависит от конкретного квеста. В среднем — от 2 до 6 человек. Мы рекомендуем бронировать оптимальное количество, чтобы всем хватило задач, и игра была интересной и динамичной. Слишком большая или слишком маленькая команда может повлиять на погружение и динамику игры.</p>
+        </details>
+
+        <details class="p-4 bg-neutral-900/40 rounded border border-red-900/10">
+          <summary class="cursor-pointer font-medium">Что делать, если кто-то боится активных сцен или спецэффектов?</summary>
+          <p class="mt-2 text-sm text-gray-400">Если у кого-то из вашей команды есть ограничения или страх перед определёнными сценами, обязательно сообщите нам до начала квеста. Мы можем предложить облегчённую версию игры или предупредить о пугающих моментах. Наша цель — сделать опыт страшным и захватывающим, но при этом безопасным и комфортным для всех участников.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / FOOTER -->
+  <footer class="border-t border-red-900/10 bg-black/80 py-8 mt-12">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-6">
+      <div>
+        <h4 class="font-semibold">Контакты</h4>
+        <p class="text-sm text-gray-400">Телеграм: <a href="https://t.me/kkssyx" class="underline">@kkssyx</a></p>
+      </div>
+      <div>
+        <h4 class="font-semibold">Часы работы</h4>
+        <p class="text-sm text-gray-400">Ежедневно 10:00 — 00:00</p>
+      </div>
+      <div>
+        <h4 class="font-semibold">Подпишитесь</h4>
+        <form id="subscribeForm" class="flex gap-2 mt-2">
+          <input type="email" name="email" placeholder="Ваш email" class="px-3 py-2 rounded bg-neutral-800 border border-red-900/10 text-sm" required>
+          <button type="submit" class="px-3 py-2 rounded bg-red-700 text-black font-medium">Подписаться</button>
+        </form>
+      </div>
+    </div>
+    <div class="mt-8 text-center text-xs text-gray-600">© Darkdoor 2025 — Все права защищены</div>
   </footer>
+
+  <!-- MODALS -->
+
+  <!-- VIDEO LIGHTBOX -->
+  <div id="videoLightbox" class="fixed inset-0 hidden items-center justify-center z-60">
+    <div class="absolute inset-0 bg-black/90"></div>
+    <div class="relative w-full max-w-3xl mx-4">
+      <button id="videoClose" class="absolute -top-8 right-0 text-gray-400">✕</button>
+      <div class="aspect-video bg-black rounded overflow-hidden">
+        <iframe id="trailerFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" title="Трейлер" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="w-full h-full"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger && burger.addEventListener('click', ()=> mobileMenu.classList.toggle('hidden'));
+
+    // Modal
+    const modal = document.getElementById('modal');
+    const modalClose = document.getElementById('modalClose');
+    const bookBtn = document.getElementById('bookBtn');
+    const bookBtn2 = document.getElementById('bookBtn2');
+    const bookQuestBtns = document.querySelectorAll('.book-quest');
+    const questInput = document.getElementById('questInput');
+
+    function openModal(questName){
+      questInput.value = questName || '';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+    function closeModal(){ modal.classList.add('hidden'); modal.classList.remove('flex'); }
+    bookBtn && bookBtn.addEventListener('click', ()=> openModal(''));
+    bookBtn2 && bookBtn2.addEventListener('click', ()=> openModal(''));
+    modalClose && modalClose.addEventListener('click', closeModal);
+    bookQuestBtns.forEach(b=> b.addEventListener('click', e=> openModal(e.target.dataset.quest)));
+
+    // Booking form handling (example: send to telegram via fetch to your server)
+    const bookingForm = document.getElementById('bookingForm');
+    bookingForm && bookingForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const data = new FormData(bookingForm);
+      // Пока просто выводим в консоль. Замените на POST-запрос к вашему API.
+      console.log('Booking:', Object.fromEntries(data.entries()));
+      alert('Заявка отправлена — мы свяжемся в ближайшее время');
+      closeModal();
+    });
+
+    // Video lightbox
+    const videoBtn = document.getElementById('videoBtn');
+    const videoLightbox = document.getElementById('videoLightbox');
+    const videoClose = document.getElementById('videoClose');
+    videoBtn && videoBtn.addEventListener('click', ()=>{ videoLightbox.classList.remove('hidden'); videoLightbox.classList.add('flex'); });
+    videoClose && videoClose.addEventListener('click', ()=>{ videoLightbox.classList.add('hidden'); videoLightbox.classList.remove('flex'); const frame = document.getElementById('trailerFrame'); frame.src = frame.src; });
+
+    // Subscribe form (demo)
+    document.getElementById('subscribeForm').addEventListener('submit', (e)=>{ e.preventDefault(); alert('Спасибо! Подписка оформлена.'); });
+
+    // Small UX: close modal on backdrop click
+    modal && modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    videoLightbox && videoLightbox.addEventListener('click', (e)=>{ if(e.target === videoLightbox) { videoLightbox.classList.add('hidden'); videoLightbox.classList.remove('flex'); } });
+  </script>
 </body>
 </html>
-
